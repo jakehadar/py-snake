@@ -9,9 +9,10 @@ FOOD = '*'
 
 
 class Canvas:
-    def __init__(self, frame, model):
+    def __init__(self, frame, model, game):
         self.frame = frame
         self.model = model
+        self.game = game
         self.grid = {}
         self.clear()
 
@@ -35,6 +36,9 @@ class Canvas:
 
     def print(self):
         os.system('clear')
+        speed_text = f'Speed: {self.game.speed:.02f}'
+        coverage_text = f'Cov: {(len(self.model) / len(self.frame.surface_points) * 100):.0f}%'
+        print(f'{speed_text} {coverage_text.rjust(self.frame.width - len(speed_text) + 1, CTR)}')
         print(''.join([NW] + [TOP] * self.frame.width + [NE]))
         for y in self.frame.yrange:
             chars = [self.grid[Point(x, self.frame.height - y - 1)] for x in self.frame.xrange]

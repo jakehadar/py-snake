@@ -39,9 +39,12 @@ class DirectionState:
 
 
 class SnakeModel:
-    def __init__(self, frame, solid_walls=True):
+    def __init__(self, frame, food_count=1, food_increase_interval=0, solid_walls=True):
         self.frame = frame
         self.snake_body = [frame.center_point + Point(0, -1 * int(frame.height / 4))]
+        self.initial_food_count = food_count
+        self.food_count = food_count
+        self.food_increase_interval = food_increase_interval
         self.solid_walls = solid_walls
         self.direction = DirectionState(self)
         self.food_locations = []
@@ -65,7 +68,10 @@ class SnakeModel:
         if not should_grow:
             self.snake_body.pop()
 
-        if not self.food_locations:
+        if self.food_increase_interval > 0:
+            self.food_count = self.initial_food_count + int(self.score / self.food_increase_interval)
+
+        while len(self.food_locations) < self.food_count and len(self.available_locations) > 0:
             location = self.available_locations.pop()
             self.food_locations.append(location)
 

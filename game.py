@@ -11,11 +11,11 @@ from common import Frame, GameConfig, SelfCollision, BoundaryCollision
 
 class Game(GameEngine):
     def __init__(self, config, kb_hit_cls=KBHit):
-        super().__init__(config.speed)
+        super().__init__(config.initial_speed)
         self.config = config
         self.frame = Frame(config.width, config.height)
-        self.model = SnakeModel(self.frame, config.solid_walls)
-        self.canvas = Canvas(self.frame, self.model)  # TODO: make canvas less coupled to model
+        self.model = SnakeModel(self.frame, config.food_count, config.food_increase_interval, config.solid_walls)
+        self.canvas = Canvas(self.frame, self.model, self)  # TODO: make canvas less coupled to model
         self.snake_controller = SnakeModelController(self.model)
 
         self.kb = kb_hit_cls()
@@ -40,6 +40,8 @@ class Game(GameEngine):
         if self.elapsed_time < 2.0:
             self.canvas.render("Set.")
             return
+
+        self.speed = self.initial_speed + (self.model.score * self.config.speed_increase_factor)
 
         snake_should_grow = False
         if last_key is not None:

@@ -28,6 +28,7 @@ class Clock:
         while self.running:
             self._tick()
             while self.timedelta < self.interval:
+                time.sleep(1/30)
                 self._wait()
         self._stop()
 
@@ -68,10 +69,11 @@ class EngineState:
 
 class GameEngine:
     def __init__(self, speed):
-        self.speed = speed
+        self.initial_speed = speed
+        self._speed = speed
         self.state = EngineState()
         self.start_time = time.time()
-        self.clock = Clock(speed, on_tick=self._update, on_wait=self._wait)
+        self.clock = Clock(self.tick_interval, on_tick=self._update, on_wait=self._wait)
 
     def start_game(self):
         self.state.update(EngineState.STARTING)
@@ -99,6 +101,19 @@ class GameEngine:
     @property
     def elapsed_time(self):
         return time.time() - self.start_time
+
+    @property
+    def tick_interval(self):
+        return 1 / self.speed
+
+    @property
+    def speed(self):
+        return self._speed
+
+    @speed.setter
+    def speed(self, value):
+        self._speed = value
+        self.clock.interval = self.tick_interval
 
     # These hooks should be implemented in the subclass
 
