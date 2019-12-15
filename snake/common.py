@@ -67,23 +67,6 @@ class LRUCache:
         return len(self.cache)
 
 
-class GameConfig(NamedTuple):
-    width: int = 25
-    height: int = 10
-    initial_speed: float = 3.0
-    max_speed: float = 30
-    speed_increase_factor = 0.15
-    solid_walls: bool = True
-
-    # Amount of food initially displayed on screen.
-    initial_food_count: int = 2
-    max_food_count: int = 5
-
-    # Increment food_count for every N points scored.
-    # (Set this to 0 to keep food_count unchanged).
-    food_increase_interval: int = 10
-
-
 def format_seconds(seconds, fmt_str='{m}:{s:02d}'):
     m = int(seconds / 60)
     s = int(seconds - m * 60)

@@ -1,7 +1,6 @@
 import warnings
-import time
 
-from common import Point, LRUCache, SelfCollision, BoundaryCollision, \
+from snake.common import Point, LRUCache, SelfCollision, BoundaryCollision, \
     IllegalDirectionTransition, DirectionOffset
 
 __all__ = ['SnakeModel']
@@ -104,8 +103,8 @@ class SnakeModel:
 
 
 def testme():
-    from model import SnakeModel, DirectionOffset
-    from common import Point
+    from snake.model import SnakeModel, DirectionOffset
+    from snake.common import Point
     s = SnakeModel(Point(5, 5), DirectionOffset.UP)
     s.step()
     s.grow()

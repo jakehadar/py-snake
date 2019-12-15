@@ -1,12 +1,11 @@
-import sys
+from typing import NamedTuple
 
-from kbhit import KBHit
-
-from engine import GameEngine
-from model import SnakeModel
-from controller import SnakeModelController
-from view import Canvas
-from common import Frame, GameConfig, SelfCollision, BoundaryCollision
+from snake.kbhit import KBHit
+from snake.engine import GameEngine
+from snake.model import SnakeModel
+from snake.controller import SnakeModelController
+from snake.view import Canvas
+from snake.common import Frame, SelfCollision, BoundaryCollision
 
 
 class Game(GameEngine):
@@ -82,22 +81,18 @@ class Game(GameEngine):
             print(self.status_message)
 
 
-def main():
-    if len(sys.argv) == 3:
-        width, height = sys.argv[1:]
-        config = GameConfig(int(width), int(height), solid_walls=True)
+class GameConfig(NamedTuple):
+    width: int = 25
+    height: int = 10
+    initial_speed: float = 3.0
+    max_speed: float = 30
+    speed_increase_factor = 0.15
+    solid_walls: bool = True
 
-    elif len(sys.argv) > 3:
-        width, height, speed = sys.argv[1:4]
-        config = GameConfig(int(width), int(height), float(speed), solid_walls=True)
+    # Amount of food initially displayed on screen.
+    initial_food_count: int = 2
+    max_food_count: int = 5
 
-    else:
-        config = GameConfig()
-
-    game = Game(config=config)
-    game.run()
-    return 0
-
-
-if __name__ == '__main__':
-    sys.exit(main())
+    # Increment food_count for every N points scored.
+    # (Set this to 0 to keep food_count unchanged).
+    food_increase_interval: int = 10

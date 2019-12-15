@@ -1,5 +1,5 @@
 import os
-from common import Point, format_seconds
+from snake.common import Point
 
 NW, TOP, NE = '┌─┐'
 LT, CTR, RT = '│ │'

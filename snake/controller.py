@@ -1,4 +1,4 @@
-from common import DirectionOffset
+from snake.common import DirectionOffset
 
 __all__ = ['SnakeModelController']
 
