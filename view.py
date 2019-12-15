@@ -19,7 +19,7 @@ class Canvas:
     def render(self, message=None):
         self.overlay(self.model.snake_body, BODY)
         self.overlay(self.model.food_locations, FOOD)
-        self.overlay(self.model.available_locations, CTR)
+        self.overlay(self.model.empty_locations, CTR)
         if message:
             for i, char in enumerate(message):
                 x_offset = -1 * int(len(message) / 2) + i

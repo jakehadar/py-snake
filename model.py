@@ -1,7 +1,7 @@
 import warnings
 import time
 
-from common import Point, SelfCollision, BoundaryCollision, \
+from common import Point, LRUCache, SelfCollision, BoundaryCollision, \
     IllegalDirectionTransition, DirectionOffset
 
 __all__ = ['SnakeModel']
@@ -39,15 +39,15 @@ class DirectionState:
 
 
 class SnakeModel:
-    def __init__(self, frame, food_count=1, food_increase_interval=0, solid_walls=True):
+    def __init__(self, frame, config):
         self.frame = frame
+        self.config = config
         self.snake_body = [frame.center_point + Point(0, -1 * int(frame.height / 4))]
-        self.initial_food_count = food_count
-        self.food_count = food_count
-        self.food_increase_interval = food_increase_interval
-        self.solid_walls = solid_walls
+        self.food_count = config.initial_food_count
+        self.solid_walls = config.solid_walls
         self.direction = DirectionState(self)
         self.food_locations = []
+        self.lru_food_locations = LRUCache(int((frame.width + frame.height) / 3))
         self.status_message = ''
 
     def step(self, should_grow=False):
@@ -68,12 +68,13 @@ class SnakeModel:
         if not should_grow:
             self.snake_body.pop()
 
-        if self.food_increase_interval > 0:
-            self.food_count = self.initial_food_count + int(self.score / self.food_increase_interval)
+        if self.config.food_increase_interval > 0 and self.food_count < self.config.max_food_count:
+            self.food_count = self.config.initial_food_count + int(self.score / self.config.food_increase_interval)
 
-        while len(self.food_locations) < self.food_count and len(self.available_locations) > 0:
-            location = self.available_locations.pop()
+        while len(self.food_locations) < self.food_count and len(self.available_food_locations) > 0:
+            location = self.available_food_locations.pop()
             self.food_locations.append(location)
+            self.lru_food_locations.push(location)
 
     @property
     def head_location(self):
@@ -84,8 +85,12 @@ class SnakeModel:
         return set(self.snake_body) | set(self.food_locations)
 
     @property
-    def available_locations(self):
+    def empty_locations(self):
         return self.frame.surface_points - self.occupied_locations
+
+    @property
+    def available_food_locations(self):
+        return self.empty_locations - set(self.lru_food_locations.cache)
 
     @property
     def score(self):

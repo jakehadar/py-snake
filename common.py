@@ -49,19 +49,39 @@ class DirectionOffset:
     RIGHT = Point(1, 0)
 
 
+class LRUCache:
+    def __init__(self, max_size):
+        self.max_size = max_size
+        self.cache = []
+
+    def push(self, item):
+        if item not in self.cache:
+            self.cache.insert(0, item)
+            while len(self.cache) > self.max_size:
+                self.cache.pop()
+
+    def __contains__(self, item):
+        return item in self.cache
+
+    def __len__(self):
+        return len(self.cache)
+
+
 class GameConfig(NamedTuple):
     width: int = 25
     height: int = 10
-    initial_speed: int = 3
+    initial_speed: float = 3.0
+    max_speed: float = 30
     speed_increase_factor = 0.15
     solid_walls: bool = True
 
     # Amount of food initially displayed on screen.
-    food_count: int = 1
+    initial_food_count: int = 2
+    max_food_count: int = 5
 
     # Increment food_count for every N points scored.
     # (Set this to 0 to keep food_count unchanged).
-    food_increase_interval: int = 5
+    food_increase_interval: int = 10
 
 
 def format_seconds(seconds, fmt_str='{m}:{s:02d}'):

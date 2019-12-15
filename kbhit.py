@@ -31,7 +31,6 @@ else:
 
 
 class KBHit:
-    _lock = False
     
     def __init__(self):
         '''Creates a KBHit object that you can call to do various keyboard things.
@@ -127,41 +126,6 @@ class KBHit:
         else:
             dr,dw,de = select([sys.stdin], [], [], 0)
             return dr != []
-
-
-class KBHitSequencer:
-    def __init__(self, sequence_gen=None):
-        self.sequence_gen = sequence_gen if sequence_gen else iter([])
-        self.first_iteration = True
-        self._lock = False
-        self.cache = []
-
-    def next_value(self):
-        try:
-            return next(self.sequence_gen)
-        except StopIteration:
-            return None
-
-    def kbhit(self):
-        if self._lock:
-            return False
-
-        if len(self.cache) == 0:
-            next_val = self.next_value()
-            self.cache.append(next_val)
-
-        if self.first_iteration:
-            self.first_iteration = False
-            return True
-
-        return len(self.cache) > 0 or self.first_iteration
-
-    def getch(self):
-        if len(self.cache) > 0:
-            value = self.cache.pop()
-            self._lock = True
-            return value
-    
     
 # Test    
 if __name__ == "__main__":

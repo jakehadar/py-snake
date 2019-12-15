@@ -14,7 +14,7 @@ class Game(GameEngine):
         super().__init__(config.initial_speed)
         self.config = config
         self.frame = Frame(config.width, config.height)
-        self.model = SnakeModel(self.frame, config.food_count, config.food_increase_interval, config.solid_walls)
+        self.model = SnakeModel(self.frame, config)
         self.canvas = Canvas(self.frame, self.model, self)  # TODO: make canvas less coupled to model
         self.snake_controller = SnakeModelController(self.model)
 
@@ -41,7 +41,8 @@ class Game(GameEngine):
             self.canvas.render("Set.")
             return
 
-        self.speed = self.initial_speed + (self.model.score * self.config.speed_increase_factor)
+        if self.speed < self.config.max_speed:
+            self.speed = self.initial_speed + (self.model.score * self.config.speed_increase_factor)
 
         snake_should_grow = False
         if last_key is not None:
@@ -53,8 +54,6 @@ class Game(GameEngine):
                 self.snake_controller.face_left()
             elif last_key == 'right':
                 self.snake_controller.face_right()
-            elif last_key == 'g':
-                snake_should_grow = True
 
         try:
             self.snake_controller.step(snake_should_grow)
@@ -72,7 +71,6 @@ class Game(GameEngine):
             self.canvas.render(overlay_text)
 
         self.last_key = None
-        self.kb._lock = False
 
     def game_should_capture_input(self):
         if self.kb.kbhit():
@@ -84,20 +82,7 @@ class Game(GameEngine):
             print(self.status_message)
 
 
-def testme():
-    from kbhit import KBHitSequencer
-    def kb_factory():
-        return KBHitSequencer(iter([None, 'up', 'g', 'g', 'g', 'g', 'g', 'g', 'right', 'down', 'left']))
-
-    config = GameConfig()
-    config.solid_walls = True
-    game = Game(config=config, kb_hit_cls=kb_factory)
-    game.run()
-
-
 def main():
-    from common import GameConfig
-
     if len(sys.argv) == 3:
         width, height = sys.argv[1:]
         config = GameConfig(int(width), int(height), solid_walls=True)
