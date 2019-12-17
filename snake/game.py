@@ -1,15 +1,17 @@
 from typing import NamedTuple
+from threading import Thread
 
-from snake.kbhit import KBHit
+from pynput.keyboard import Key, Listener
+
 from snake.engine import GameEngine
 from snake.model import SnakeModel
 from snake.controller import SnakeModelController
 from snake.view import Canvas
-from snake.common import Frame, SelfCollision, BoundaryCollision
+from snake.common import Frame, SelfCollision, BoundaryCollision, GameOver
 
 
 class Game(GameEngine):
-    def __init__(self, config, kb_hit_cls=KBHit):
+    def __init__(self, config):
         super().__init__(config.initial_speed)
         self.config = config
         self.frame = Frame(config.width, config.height)
@@ -17,7 +19,6 @@ class Game(GameEngine):
         self.canvas = Canvas(self.frame, self.model, self)  # TODO: make canvas less coupled to model
         self.snake_controller = SnakeModelController(self.model)
 
-        self.kb = kb_hit_cls()
         self.last_key = None
         self.status_message = ""
 
@@ -28,6 +29,17 @@ class Game(GameEngine):
             self.stop_game()
         except Exception:
             raise
+
+    def game_will_begin(self):
+        def target():
+            def on_press(key):
+                self.last_key = key
+
+            with Listener(on_press=on_press) as listener:
+                listener.join()
+
+        t = Thread(target=target)
+        t.start()
 
     def game_should_update_frame(self):
         last_key = self.last_key
@@ -45,14 +57,16 @@ class Game(GameEngine):
 
         snake_should_grow = False
         if last_key is not None:
-            if last_key == 'up':
+            if last_key == Key.up:
                 self.snake_controller.face_up()
-            elif last_key == 'down':
+            elif last_key == Key.down:
                 self.snake_controller.face_down()
-            elif last_key == 'left':
+            elif last_key == Key.left:
                 self.snake_controller.face_left()
-            elif last_key == 'right':
+            elif last_key == Key.right:
                 self.snake_controller.face_right()
+            elif last_key == Key.esc:
+                self.stop_game()
 
         try:
             self.snake_controller.step(snake_should_grow)
@@ -69,16 +83,15 @@ class Game(GameEngine):
 
             self.canvas.render(overlay_text)
 
-        self.last_key = None
-
     def game_should_capture_input(self):
-        if self.kb.kbhit():
-            self.last_key = self.kb.getch()
+        pass
 
     def game_did_end(self):
         self.canvas.render("Game Over.")
         if self.status_message:
             print(self.status_message)
+
+        raise GameOver
 
 
 class GameConfig(NamedTuple):
@@ -90,7 +103,7 @@ class GameConfig(NamedTuple):
     solid_walls: bool = True
 
     # Amount of food initially displayed on screen.
-    initial_food_count: int = 2
+    initial_food_count: int = 1
     max_food_count: int = 5
 
     # Increment food_count for every N points scored.

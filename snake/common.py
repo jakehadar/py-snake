@@ -73,14 +73,17 @@ def format_seconds(seconds, fmt_str='{m}:{s:02d}'):
     return fmt_str.format(m=m, s=s)
 
 
-class SelfCollision(Exception):
+class GameOver(Exception):
     pass
 
 
-class BoundaryCollision(Exception):
+class SelfCollision(GameOver):
+    pass
+
+
+class BoundaryCollision(GameOver):
     pass
 
 
 class IllegalDirectionTransition(Warning):
     pass
-

@@ -1,4 +1,6 @@
 import os
+import functools
+
 from snake.common import Point
 
 NW, TOP, NE = '┌─┐'
@@ -14,7 +16,8 @@ class Canvas:
         self.model = model
         self.game = game
         self.grid = {}
-        self.clear()
+        self.clear_console = functools.partial(os.system, 'cls' if os.name == 'nt' else 'clear')
+        self.reset()
 
     def render(self, message=None):
         self.overlay(self.model.snake_body, BODY)
@@ -27,7 +30,7 @@ class Canvas:
                 self.overlay([self.frame.center_point + Point(x_offset, 0)], char)
         self.print()
 
-    def clear(self):
+    def reset(self):
         self.grid = {point: CTR for point in self.frame.surface_points}
 
     def overlay(self, points, char):
@@ -35,7 +38,7 @@ class Canvas:
             self.grid[point] = char
 
     def print(self):
-        os.system('clear')
+        self.clear_console()
         speed_text = f'Speed: {self.game.speed:.02f}'
         coverage_text = f'Cov: {(len(self.model) / len(self.frame.surface_points) * 100):.0f}%'
         print(f'{speed_text} {coverage_text.rjust(self.frame.width - len(speed_text) + 1, CTR)}')

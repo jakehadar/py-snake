@@ -1,7 +1,9 @@
+import os
 import sys
 import argparse
 
 from snake.game import Game, GameConfig
+from snake.common import GameOver
 
 
 def main():
@@ -20,9 +22,15 @@ def main():
     config = GameConfig(args.width, args.height, args.speed,
                         initial_food_count=args.food, max_food_count=max_food_count)
     game = Game(config=config)
-    game.run()
-    return 0
+
+    try:
+        game.run()
+    except GameOver:
+        return 0
+    except Exception as e:
+        print(e)
+    return 1
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    os._exit(main())

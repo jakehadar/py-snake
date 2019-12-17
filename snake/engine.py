@@ -28,7 +28,6 @@ class Clock:
         while self.running:
             self._tick()
             while self.timedelta < self.interval:
-                time.sleep(1/30)
                 self._wait()
         self._stop()
 
@@ -96,6 +95,7 @@ class GameEngine:
             self.game_should_update_frame()
 
     def _wait(self):
+        time.sleep(1 / 60)
         self.game_should_capture_input()
 
     @property
