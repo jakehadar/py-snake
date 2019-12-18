@@ -12,10 +12,10 @@ exit_func = sys.exit
 PY_3 = sys.version_info.major == 3
 
 
-def get_terminal_size_or_default(default):
+def get_terminal_size_or_default(default, max_width=78, max_height=40):
     try:
         w, h = tuple(os.get_terminal_size())
-        return w - 2, h - 5
+        return min(w - 2, max_width), min(h - 5, max_height)
 
     except Exception:
         return default.width, default.height

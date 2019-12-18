@@ -16,6 +16,13 @@ setup(
     keywords='snake game python cli command line',
     packages=find_packages(exclude=['tests']),
     classifiers=[
+        'Environment :: Console',
+        'Intended Audience :: End Users/Desktop',
+        'Natural Language :: English',
+        'Operating System :: POSIX',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Games/Entertainment :: Arcade',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python',
