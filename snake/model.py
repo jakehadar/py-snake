@@ -1,6 +1,6 @@
 import warnings
 
-from snake.common import Point, LRUCache, SelfCollision, BoundaryCollision, \
+from .common import Point, LRUCache, SelfCollision, BoundaryCollision, \
     IllegalDirectionTransition, DirectionOffset
 
 __all__ = ['SnakeModel']

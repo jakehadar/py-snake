@@ -1,9 +1,9 @@
-from snake.input import DefaultKeyReader
-from snake.engine import GameEngine
-from snake.model import SnakeModel
-from snake.controller import SnakeModelController
-from snake.view import Canvas
-from snake.common import Frame, SelfCollision, BoundaryCollision, GameOver
+from .input import DefaultKeyReader
+from .engine import GameEngine
+from .model import SnakeModel
+from .controller import SnakeModelController
+from .view import Canvas
+from .common import Frame, SelfCollision, BoundaryCollision, GameOver
 
 
 class Game(GameEngine):

@@ -3,7 +3,7 @@
 import os
 import functools
 
-from snake.common import Point
+from .common import Point
 
 NW, TOP, NE = '┌', '─', '┐'
 LT, CTR, RT = '│', ' ', '│'
