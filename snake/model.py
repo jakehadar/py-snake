@@ -1,7 +1,4 @@
-import warnings
-
-from .common import Point, LRUCache, SelfCollision, BoundaryCollision, \
-    IllegalDirectionTransition, DirectionOffset
+from .common import Point, LRUCache, SelfCollision, BoundaryCollision, DirectionOffset
 
 __all__ = ['SnakeModel']
 
@@ -31,7 +28,7 @@ class DirectionState:
     def offset(self, proposed):
         if proposed not in self.legal_transitions[self.offset]:
             if len(self.model) > 1:
-                warnings.warn("Snake cannot move this direction.", IllegalDirectionTransition)
+                # warnings.warn("Snake cannot move this direction.")
                 return
 
         self._offset = proposed
@@ -48,6 +45,18 @@ class SnakeModel:
         self.food_locations = []
         self.lru_food_locations = LRUCache(int((frame.width + frame.height) / 3))
         self.status_message = ''
+
+    def face_up(self):
+        self.direction.offset = DirectionOffset.UP
+
+    def face_down(self):
+        self.direction.offset = DirectionOffset.DOWN
+
+    def face_left(self):
+        self.direction.offset = DirectionOffset.LEFT
+
+    def face_right(self):
+        self.direction.offset = DirectionOffset.RIGHT
 
     def step(self, should_grow=False):
         new_location = self.head_location + self.direction.offset
@@ -100,15 +109,3 @@ class SnakeModel:
 
     def __len__(self):
         return len(self.snake_body)
-
-
-def testme():
-    from snake.model import SnakeModel, DirectionOffset
-    from snake.common import Point
-    s = SnakeModel(Point(5, 5), DirectionOffset.UP)
-    s.step()
-    s.grow()
-
-
-if __name__ == '__main__':
-    testme()

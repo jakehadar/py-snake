@@ -76,7 +76,3 @@ class SelfCollision(GameOver):
 
 class BoundaryCollision(GameOver):
     pass
-
-
-class IllegalDirectionTransition(Warning):
-    pass
