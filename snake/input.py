@@ -1,10 +1,6 @@
-from threading import Thread
-
-from pynput.keyboard import Key, Listener
-
 from .kbhit import KBHit
 
-__all__ = ['DefaultKeyReader', 'NTKeyReader']
+__all__ = ['DefaultKeyReader', 'ArrowKeyReader']
 
 
 class _KeyReader:
@@ -34,33 +30,28 @@ class DefaultKeyReader(_KeyReader):
         return self._tmp
 
 
-class NTKeyReader(_KeyReader):
+class ArrowKeyReader(_KeyReader):
     def __init__(self):
+        self._kb = KBHit()
         self._last_key = None
-
-        def target():
-            def on_press(key):
-                self._last_key = key
-
-            with Listener(on_press=on_press) as listener:
-                listener.join()
-
-        t = Thread(target=target)
-        t.start()
+        self._tmp = None
 
     def capture(self):
-        pass
+        self._tmp = None
+        if self._kb.kbhit():
+            self._last_key = self._kb.getarrow()
 
     def last_key(self):
-        key = self._last_key
-        if isinstance(key, Key):
-            return key.name
-        return key
+        if self._tmp:
+            return self._tmp
+        self._tmp = self._last_key
+        self._last_key = None
+        return self._tmp
 
 
 if __name__ == '__main__':
     import time
-    k = DefaultKeyReader()
+    k = ArrowKeyReader()
 
     while True:
         now = time.time()

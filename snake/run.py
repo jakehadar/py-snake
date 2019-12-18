@@ -1,16 +1,11 @@
-import os
 import sys
 import argparse
 
 from .game import Game, GameConfig
 from .common import GameOver
+from .input import ArrowKeyReader as KeyReader
 
-if os.name == 'nt':
-    from .input import NTKeyReader as KeyReader
-    exit_func = os._exit
-else:
-    from .input import DefaultKeyReader as KeyReader
-    exit_func = sys.exit
+exit_func = sys.exit
 
 
 def main():

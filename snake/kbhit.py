@@ -106,7 +106,9 @@ class KBHit:
             c = sys.stdin.read(3)[2]
             vals = [65, 67, 66, 68]
 
-        return vals.index(ord(utf8(c)))
+        arrows = ['up', 'right', 'down', 'left']
+
+        return arrows[vals.index(ord(utf8(c)))]
 
     def kbhit(self):
         ''' Returns True if keyboard character was hit, False otherwise.

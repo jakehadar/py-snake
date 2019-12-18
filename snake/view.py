@@ -29,11 +29,8 @@ class Canvas:
     def register_score_hook(self, score_hook):
         self.score_hook = score_hook
 
-    @property
-    def speed(self): return self.speed_hook()
-
-    @property
-    def score(self): return self.score_hook()
+    def reset(self):
+        self.grid = {point: CTR for point in self.frame.surface_points}
 
     def render(self, message=None):
         for points_getter, character in self.overlays:
@@ -45,9 +42,6 @@ class Canvas:
                 self.overlay([self.frame.center_point + Point(x_offset, 0)], char)
         self.print_to_console()
 
-    def reset(self):
-        self.grid = {point: CTR for point in self.frame.surface_points}
-
     def overlay(self, points, char):
         for point in points:
             self.grid[point] = char
@@ -55,7 +49,7 @@ class Canvas:
     def print_to_console(self):
         self.clear_console()
         speed_text = 'Speed: {:.02f}'.format(self.speed)
-        coverage_text = 'Cov: {:.0f}%'.format((self.score / len(self.frame.surface_points) * 100))
+        coverage_text = 'Cov: {:.0f}%'.format(self.coverage)
         print('{} {}'.format(speed_text, coverage_text.rjust(self.frame.width - len(speed_text) + 1, CTR)))
         print(''.join([NW] + [TOP] * self.frame.width + [NE]))
         for y in self.frame.yrange:
@@ -63,3 +57,15 @@ class Canvas:
             print(''.join([LT] + chars + [RT]))
         print(''.join([SW] + [BTM] * self.frame.width + [SE]))
         print('Score: {}'.format(self.score))
+
+    @property
+    def speed(self):
+        return self.speed_hook()
+
+    @property
+    def score(self):
+        return self.score_hook()
+
+    @property
+    def coverage(self):
+        return (1 + self.score) / len(self.frame.surface_points) * 100
