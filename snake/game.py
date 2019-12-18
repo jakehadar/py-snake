@@ -1,5 +1,3 @@
-from typing import NamedTuple
-
 from snake.input import DefaultKeyReader
 from snake.engine import GameEngine
 from snake.model import SnakeModel
@@ -10,7 +8,7 @@ from snake.common import Frame, SelfCollision, BoundaryCollision, GameOver
 
 class Game(GameEngine):
     def __init__(self, config, key_reader_cls=DefaultKeyReader):
-        super().__init__(config.initial_speed)
+        super(Game, self).__init__(config.initial_speed)
         self.config = config
         self.frame = Frame(config.width, config.height)
         self.model = SnakeModel(self.frame, config)
@@ -81,18 +79,18 @@ class Game(GameEngine):
         raise GameOver
 
 
-class GameConfig(NamedTuple):
-    width: int = 25
-    height: int = 10
-    initial_speed: float = 3.0
-    max_speed: float = 30
+class GameConfig:
+    width = 25
+    height = 10
+    initial_speed = 3.0
+    max_speed = 30
     speed_increase_factor = 0.15
-    solid_walls: bool = True
+    solid_walls = True
 
     # Amount of food initially displayed on screen.
-    initial_food_count: int = 1
-    max_food_count: int = 5
+    initial_food_count = 1
+    max_food_count = 5
 
     # Increment food_count for every N points scored.
     # (Set this to 0 to keep food_count unchanged).
-    food_increase_interval: int = 10
+    food_increase_interval = 10

@@ -66,7 +66,7 @@ class EngineState:
         return True if self.state == other else False
 
 
-class GameEngine:
+class GameEngine(object):
     def __init__(self, speed):
         self.initial_speed = speed
         self._speed = speed

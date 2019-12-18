@@ -5,7 +5,7 @@ import argparse
 from snake.game import Game, GameConfig
 from snake.common import GameOver
 
-if os.name == 'posix':
+if os.name == 'nt':
     from snake.input import NTKeyReader as KeyReader
     exit_func = os._exit
 else:
@@ -26,8 +26,13 @@ def main():
     if args.food > defaults.max_food_count:
         max_food_count = args.food
 
-    config = GameConfig(args.width, args.height, args.speed,
-                        initial_food_count=args.food, max_food_count=max_food_count)
+    config = GameConfig()
+    config.width = args.width
+    config.height = args.height
+    config.speed = args.speed
+    config.initial_food_count = args.food
+    config.max_food_count = max_food_count
+
     game = Game(config=config, key_reader_cls=KeyReader)
 
     try:
