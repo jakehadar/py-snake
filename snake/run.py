@@ -1,7 +1,9 @@
+import os
 import sys
 import argparse
 
-from .game import Game, GameConfig
+from .game import Game
+from .config import GameConfig
 from .common import GameOver
 from .input import ArrowKeyReader as KeyReader
 
