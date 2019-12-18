@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from .input import DefaultKeyReader
 from .engine import GameEngine
 from .model import SnakeModel
