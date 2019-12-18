@@ -2,7 +2,7 @@ from threading import Thread
 
 from pynput.keyboard import Key, Listener
 
-from snake.kbhit import KBHit
+from .kbhit import KBHit
 
 __all__ = ['DefaultKeyReader', 'NTKeyReader']
 

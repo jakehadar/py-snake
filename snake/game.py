@@ -1,9 +1,15 @@
-from snake.input import DefaultKeyReader
-from snake.engine import GameEngine
-from snake.model import SnakeModel
-from snake.controller import SnakeModelController
-from snake.view import Canvas
-from snake.common import Frame, SelfCollision, BoundaryCollision, GameOver
+# -*- coding: utf-8 -*-
+
+from .input import DefaultKeyReader
+from .engine import GameEngine
+from .model import SnakeModel
+from .view import Canvas
+from .common import Frame, SelfCollision, BoundaryCollision, GameOver
+
+
+BODY = '█'
+FOOD = '*'
+EMPTY = ' '
 
 
 class Game(GameEngine):
@@ -11,10 +17,18 @@ class Game(GameEngine):
         super(Game, self).__init__(config.initial_speed)
         self.config = config
         self.frame = Frame(config.width, config.height)
-        self.model = SnakeModel(self.frame, config)
-        self.canvas = Canvas(self.frame, self.model, self)  # TODO: make canvas less coupled to model
-        self.snake_controller = SnakeModelController(self.model)
+        self.snake = SnakeModel(self.frame, config)
 
+        def setup_canvas():
+            canvas = Canvas(self.frame)
+            canvas.register_overlay(lambda: self.snake.snake_body, BODY)
+            canvas.register_overlay(lambda: self.snake.food_locations, FOOD)
+            canvas.register_overlay(lambda: self.snake.empty_locations, EMPTY)
+            canvas.register_score_hook(lambda: self.snake.score)
+            canvas.register_speed_hook(lambda: self.speed)
+            return canvas
+
+        self.canvas = setup_canvas()
         self.key_reader = key_reader_cls()
         self.status_message = ""
 
@@ -38,23 +52,23 @@ class Game(GameEngine):
             return
 
         if self.speed < self.config.max_speed:
-            self.speed = self.initial_speed + (self.model.score * self.config.speed_increase_factor)
+            self.speed = self.initial_speed + (self.snake.score * self.config.speed_increase_factor)
 
         snake_should_grow = False
         if last_key is not None:
             if last_key == 'up':
-                self.snake_controller.face_up()
+                self.snake.face_up()
             elif last_key == 'down':
-                self.snake_controller.face_down()
+                self.snake.face_down()
             elif last_key == 'left':
-                self.snake_controller.face_left()
+                self.snake.face_left()
             elif last_key == 'right':
-                self.snake_controller.face_right()
+                self.snake.face_right()
             elif last_key == 'esc':
                 self.stop_game()
 
         try:
-            self.snake_controller.step(snake_should_grow)
+            self.snake.step(snake_should_grow)
         except SelfCollision:
             self.status_message = "Collision with self!"
             self.stop_game()

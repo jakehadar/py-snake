@@ -2,14 +2,14 @@ import os
 import sys
 import argparse
 
-from snake.game import Game, GameConfig
-from snake.common import GameOver
+from .game import Game, GameConfig
+from .common import GameOver
 
 if os.name == 'nt':
-    from snake.input import NTKeyReader as KeyReader
+    from .input import NTKeyReader as KeyReader
     exit_func = os._exit
 else:
-    from snake.input import DefaultKeyReader as KeyReader
+    from .input import DefaultKeyReader as KeyReader
     exit_func = sys.exit
 
 
@@ -39,9 +39,11 @@ def main():
         game.run()
     except GameOver:
         return 0
-    except Exception as e:
-        print(e)
-    return 1
+    except Exception:
+        raise
+    # except Exception as e:
+    #     print(e)
+    # return 1
 
 
 if __name__ == '__main__':
