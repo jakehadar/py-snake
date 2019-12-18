@@ -30,11 +30,7 @@ else:
     import atexit
     from select import select
 
-
-if sys.version_info.major == 2:
-    utf8 = lambda s: s.decode('utf-8')
-else:
-    utf8 = lambda s: s
+from .compat import utf8
 
 
 class KBHit:

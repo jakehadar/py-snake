@@ -9,9 +9,24 @@ from .input import ArrowKeyReader as KeyReader
 
 exit_func = sys.exit
 
+PY_3 = sys.version_info.major == 3
+
+
+def get_terminal_size_or_default(default):
+    try:
+        w, h = tuple(os.get_terminal_size())
+        return w - 2, h - 5
+
+    except Exception:
+        return default.width, default.height
+
 
 def main():
     defaults = GameConfig()
+
+    if PY_3:
+        defaults.width, defaults.height = get_terminal_size_or_default(defaults)
+
     parser = argparse.ArgumentParser(description="Snake game for CLI")
     parser.add_argument("--width", type=int, help="Frame width", default=defaults.width)
     parser.add_argument("--height", type=int, help="Frame height", default=defaults.height)

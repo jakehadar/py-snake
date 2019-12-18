@@ -4,10 +4,11 @@ import os
 import functools
 
 from .common import Point
+from .compat import utf8
 
-NW, TOP, NE = '┌', '─', '┐'
-LT, CTR, RT = '│', ' ', '│'
-SW, BTM, SE = '└', '─', '┘'
+NW, NN, NE = utf8('┌'), utf8('─'), utf8('┐')
+WW, XX, EE = utf8('│'), utf8(' '), utf8('│')
+SW, SS, SE = utf8('└'), utf8('─'), utf8('┘')
 
 
 class Canvas:
@@ -30,7 +31,7 @@ class Canvas:
         self.score_hook = score_hook
 
     def reset(self):
-        self.grid = {point: CTR for point in self.frame.surface_points}
+        self.grid = {point: XX for point in self.frame.surface_points}
 
     def render(self, message=None):
         for points_getter, character in self.overlays:
@@ -48,14 +49,14 @@ class Canvas:
 
     def print_to_console(self):
         self.clear_console()
-        speed_text = 'Speed: {:.02f}'.format(self.speed)
-        coverage_text = 'Cov: {:.0f}%'.format(self.coverage)
-        print('{} {}'.format(speed_text, coverage_text.rjust(self.frame.width - len(speed_text) + 1, CTR)))
-        print(''.join([NW] + [TOP] * self.frame.width + [NE]))
+        speed_text = utf8('Speed: {:.02f}'.format(self.speed))
+        coverage_text = utf8('Cov: {:.0f}%'.format(self.coverage))
+        print('{} {}'.format(speed_text, coverage_text.rjust(self.frame.width - len(speed_text) + 1, XX)))
+        print(''.join([NW] + [NN] * self.frame.width + [NE]))
         for y in self.frame.yrange:
             chars = [self.grid[Point(x, self.frame.height - y - 1)] for x in self.frame.xrange]
-            print(''.join([LT] + chars + [RT]))
-        print(''.join([SW] + [BTM] * self.frame.width + [SE]))
+            print(''.join([WW] + chars + [EE]))
+        print(''.join([SW] + [SS] * self.frame.width + [SE]))
         print('Score: {}'.format(self.score))
 
     @property
