@@ -1,6 +1,6 @@
 Snake
 -----
-An interactive CLI Snake game in Python3.
+An interactive CLI Snake game, tested on Python 2.7 and 3.6 Posix environments.
 
 ![Applications list view](https://github.com/jakehadar/py-snake/blob/master/screenshots/screenshot@half.png)
 
