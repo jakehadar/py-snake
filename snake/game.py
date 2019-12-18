@@ -1,24 +1,21 @@
-from typing import NamedTuple
-
-from snake.kbhit import KBHit
+from snake.input import DefaultKeyReader
 from snake.engine import GameEngine
 from snake.model import SnakeModel
 from snake.controller import SnakeModelController
 from snake.view import Canvas
-from snake.common import Frame, SelfCollision, BoundaryCollision
+from snake.common import Frame, SelfCollision, BoundaryCollision, GameOver
 
 
 class Game(GameEngine):
-    def __init__(self, config, kb_hit_cls=KBHit):
-        super().__init__(config.initial_speed)
+    def __init__(self, config, key_reader_cls=DefaultKeyReader):
+        super(Game, self).__init__(config.initial_speed)
         self.config = config
         self.frame = Frame(config.width, config.height)
         self.model = SnakeModel(self.frame, config)
         self.canvas = Canvas(self.frame, self.model, self)  # TODO: make canvas less coupled to model
         self.snake_controller = SnakeModelController(self.model)
 
-        self.kb = kb_hit_cls()
-        self.last_key = None
+        self.key_reader = key_reader_cls()
         self.status_message = ""
 
     def run(self):
@@ -30,7 +27,7 @@ class Game(GameEngine):
             raise
 
     def game_should_update_frame(self):
-        last_key = self.last_key
+        last_key = self.key_reader.last_key()
 
         if self.elapsed_time < 1.0:
             self.canvas.render("Ready.")
@@ -53,6 +50,8 @@ class Game(GameEngine):
                 self.snake_controller.face_left()
             elif last_key == 'right':
                 self.snake_controller.face_right()
+            elif last_key == 'esc':
+                self.stop_game()
 
         try:
             self.snake_controller.step(snake_should_grow)
@@ -69,30 +68,29 @@ class Game(GameEngine):
 
             self.canvas.render(overlay_text)
 
-        self.last_key = None
-
     def game_should_capture_input(self):
-        if self.kb.kbhit():
-            self.last_key = self.kb.getch()
+        self.key_reader.capture()
 
     def game_did_end(self):
         self.canvas.render("Game Over.")
         if self.status_message:
             print(self.status_message)
 
+        raise GameOver
 
-class GameConfig(NamedTuple):
-    width: int = 25
-    height: int = 10
-    initial_speed: float = 3.0
-    max_speed: float = 30
+
+class GameConfig:
+    width = 25
+    height = 10
+    initial_speed = 3.0
+    max_speed = 30
     speed_increase_factor = 0.15
-    solid_walls: bool = True
+    solid_walls = True
 
     # Amount of food initially displayed on screen.
-    initial_food_count: int = 2
-    max_food_count: int = 5
+    initial_food_count = 1
+    max_food_count = 5
 
     # Increment food_count for every N points scored.
     # (Set this to 0 to keep food_count unchanged).
-    food_increase_interval: int = 10
+    food_increase_interval = 10

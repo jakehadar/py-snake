@@ -1,21 +1,19 @@
-from functools import lru_cache
-from typing import NamedTuple
+from collections import namedtuple
 
 
-class Point(NamedTuple):
-    x: int
-    y: int
-
+class Point(namedtuple('Point', ['x', 'y'])):
     def __eq__(self, other): return self.x == other.x and self.y == other.y
     def __add__(self, other): return Point(self.x + other.x, self.y + other.y)
     def __hash__(self): return hash(str(self))
 
 
-class Frame(NamedTuple):
-    width: int
-    height: int
-    x: int = 0
-    y: int = 0
+class Frame:
+    def __init__(self, width, height, x=0, y=0):
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
+        self.surface_points = set(Point(x, y) for x in self.xrange for y in self.yrange)
 
     @property
     def origin_point(self):
@@ -24,11 +22,6 @@ class Frame(NamedTuple):
     @property
     def center_point(self):
         return Point(int(self.width / 2), int(self.height / 2))
-
-    @property
-    @lru_cache()
-    def surface_points(self):
-        return set(Point(x, y) for x in self.xrange for y in self.yrange)
 
     @property
     def xrange(self):
@@ -73,14 +66,17 @@ def format_seconds(seconds, fmt_str='{m}:{s:02d}'):
     return fmt_str.format(m=m, s=s)
 
 
-class SelfCollision(Exception):
+class GameOver(Exception):
     pass
 
 
-class BoundaryCollision(Exception):
+class SelfCollision(GameOver):
+    pass
+
+
+class BoundaryCollision(GameOver):
     pass
 
 
 class IllegalDirectionTransition(Warning):
     pass
-
