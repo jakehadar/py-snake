@@ -17,6 +17,7 @@ GNU General Public License for more details.
 '''
 
 import os
+import sys
 
 # Windows
 if os.name == 'nt':
@@ -30,16 +31,15 @@ else:
     from select import select
 
 
+if sys.version_info.major == 2:
+    utf8 = lambda s: s.decode('utf-8')
+else:
+    utf8 = lambda s: s
+
+
 class KBHit:
-
     def __init__(self):
-        '''Creates a KBHit object that you can call to do various keyboard things.
-        '''
-
-        if os.name == 'nt':
-            pass
-
-        else:
+        if os.name != 'nt':
 
             # Save the terminal settings
             self.fd = sys.stdin.fileno()
@@ -57,10 +57,7 @@ class KBHit:
         ''' Resets to normal terminal.  On Windows this is a no-op.
         '''
 
-        if os.name == 'nt':
-            pass
-
-        else:
+        if os.name != 'nt':
             termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
 
     def getch(self):
@@ -68,28 +65,26 @@ class KBHit:
             Should not be called in the same program as getarrow().
         '''
 
-        s = ''
-
         if os.name == 'nt':
-            return msvcrt.getch().decode('utf-8')
+            return utf8(msvcrt.getch())
 
         else:
             c = sys.stdin.read(1)
-            if ord(c.decode('utf-8')) == 27:
+            if ord(utf8(c)) == 27:
                 c2 = sys.stdin.read(1)
-                if ord(c2.decode('utf-8')) == 91:
+                if ord(utf8(c2)) == 91:
                     c3 = sys.stdin.read(1)
-                    if ord(c3.decode('utf-8')) == 65:
+                    if ord(utf8(c3)) == 65:
                         return 'up'
-                    if ord(c3.decode('utf-8')) == 66:
+                    if ord(utf8(c3)) == 66:
                         return 'down'
-                    if ord(c3.decode('utf-8')) == 67:
+                    if ord(utf8(c3)) == 67:
                         return 'right'
-                    if ord(c3.decode('utf-8')) == 68:
+                    if ord(utf8(c3)) == 68:
                         return 'left'
-                    return ord(c3.decode('utf-8'))
+                    return ord(utf8(c3))
                 return 'esc'
-            elif ord(c.decode('utf-8')) == 10:
+            elif ord(utf8(c)) == 10:
                 return 'enter'
             return c
 
@@ -111,7 +106,7 @@ class KBHit:
             c = sys.stdin.read(3)[2]
             vals = [65, 67, 66, 68]
 
-        return vals.index(ord(c.decode('utf-8')))
+        return vals.index(ord(utf8(c)))
 
     def kbhit(self):
         ''' Returns True if keyboard character was hit, False otherwise.
@@ -128,19 +123,11 @@ class KBHit:
 if __name__ == "__main__":
 
     kb = KBHit()
-
-    print('Hit any key, or ESC to exit')
-
     while True:
+        if kb.kbhit():
+            c = kb.getch()
+            if c == 'esc':
+                break
+            print(c)
 
-        print(kb.getch())
-
-        # if kb.kbhit():
-        #     c = kb.getch()
-        #     if c == 'esc':
-        #         break
-        #     print(c)
-
-    kb.set_normal_term()
-
-
+    print("Done")

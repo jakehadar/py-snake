@@ -1,8 +1,6 @@
 from typing import NamedTuple
-from threading import Thread
 
-from pynput.keyboard import Key, Listener
-
+from snake.input import DefaultKeyReader
 from snake.engine import GameEngine
 from snake.model import SnakeModel
 from snake.controller import SnakeModelController
@@ -11,7 +9,7 @@ from snake.common import Frame, SelfCollision, BoundaryCollision, GameOver
 
 
 class Game(GameEngine):
-    def __init__(self, config):
+    def __init__(self, config, key_reader_cls=DefaultKeyReader):
         super().__init__(config.initial_speed)
         self.config = config
         self.frame = Frame(config.width, config.height)
@@ -19,7 +17,7 @@ class Game(GameEngine):
         self.canvas = Canvas(self.frame, self.model, self)  # TODO: make canvas less coupled to model
         self.snake_controller = SnakeModelController(self.model)
 
-        self.last_key = None
+        self.key_reader = key_reader_cls()
         self.status_message = ""
 
     def run(self):
@@ -30,19 +28,8 @@ class Game(GameEngine):
         except Exception:
             raise
 
-    def game_will_begin(self):
-        def target():
-            def on_press(key):
-                self.last_key = key
-
-            with Listener(on_press=on_press) as listener:
-                listener.join()
-
-        t = Thread(target=target)
-        t.start()
-
     def game_should_update_frame(self):
-        last_key = self.last_key
+        last_key = self.key_reader.last_key()
 
         if self.elapsed_time < 1.0:
             self.canvas.render("Ready.")
@@ -57,15 +44,15 @@ class Game(GameEngine):
 
         snake_should_grow = False
         if last_key is not None:
-            if last_key == Key.up:
+            if last_key == 'up':
                 self.snake_controller.face_up()
-            elif last_key == Key.down:
+            elif last_key == 'down':
                 self.snake_controller.face_down()
-            elif last_key == Key.left:
+            elif last_key == 'left':
                 self.snake_controller.face_left()
-            elif last_key == Key.right:
+            elif last_key == 'right':
                 self.snake_controller.face_right()
-            elif last_key == Key.esc:
+            elif last_key == 'esc':
                 self.stop_game()
 
         try:
@@ -84,7 +71,7 @@ class Game(GameEngine):
             self.canvas.render(overlay_text)
 
     def game_should_capture_input(self):
-        pass
+        self.key_reader.capture()
 
     def game_did_end(self):
         self.canvas.render("Game Over.")
