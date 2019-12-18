@@ -4,12 +4,47 @@ An interactive CLI Snake game in Python3.
 
 ![Applications list view](https://github.com/jakehadar/py-snake/blob/master/screenshots/screenshot@half.png)
 
-Usage
------
+Installation
+------------
+Install from PyPi using
+[pip](http://www.pip-installer.org/en/latest/), a package manager for
+Python.
 
-Run from the command line.
+``` {.sourceCode .bash}
+ pip install py-snake
+```
+
+Or clone the repo and install using setuptools.
 
 ``` {.sourceCode .bash}
  cd path/to/repo
- python snake.py
+ python setup.py develop
+```
+
+Usage
+-----
+Start a new game by running `snake` from from command line. Optionally pass `--help` flag for more info.
+
+``` {.sourceCode .bash}
+$ snake --help
+usage: snake [-h] [--width WIDTH] [--height HEIGHT] [--speed SPEED]
+             [--food FOOD]
+
+Snake game for CLI
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --width WIDTH    Frame width
+  --height HEIGHT  Frame height
+  --speed SPEED    Snake speed (fps)
+  --food FOOD      Number of food pieces available
+```
+
+
+Uninstallation
+--------------
+Uninstall Snake completely using pip.
+
+``` {.sourceCode .bash}
+ pip uninstall py-snake
 ```
