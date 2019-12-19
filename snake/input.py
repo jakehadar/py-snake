@@ -52,7 +52,9 @@ class ArrowKeyReader(_KeyReader):
     def capture(self):
         self._tmp = None
         if self._kb.kbhit():
-            self._last_key = self._kb.getarrow()
+            key = self._kb.getarrow()
+            if key != -1:
+                self._last_key = ['up', 'right', 'down', 'left'][key]
 
     def last_key(self):
         if self._tmp:
@@ -146,9 +148,11 @@ class _KBHit:
             c = sys.stdin.read(3)[2]
             vals = [65, 67, 66, 68]
 
-        arrows = ['up', 'right', 'down', 'left']
+        code = ord(c)
+        if code not in vals:
+            return -1
 
-        return arrows[vals.index(ord(c))]
+        return vals.index(code)
 
     def kbhit(self):
         ''' Returns True if keyboard character was hit, False otherwise.
