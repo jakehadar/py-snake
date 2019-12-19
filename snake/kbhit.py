@@ -30,8 +30,6 @@ else:
     import atexit
     from select import select
 
-from .compat import utf8
-
 
 class KBHit:
     def __init__(self):
@@ -62,25 +60,25 @@ class KBHit:
         '''
 
         if os.name == 'nt':
-            return utf8(msvcrt.getch())
+            return msvcrt.getch()
 
         else:
             c = sys.stdin.read(1)
-            if ord(utf8(c)) == 27:
+            if ord(c) == 27:
                 c2 = sys.stdin.read(1)
-                if ord(utf8(c2)) == 91:
+                if ord(c2) == 91:
                     c3 = sys.stdin.read(1)
-                    if ord(utf8(c3)) == 65:
+                    if ord(c3) == 65:
                         return 'up'
-                    if ord(utf8(c3)) == 66:
+                    if ord(c3) == 66:
                         return 'down'
-                    if ord(utf8(c3)) == 67:
+                    if ord(c3) == 67:
                         return 'right'
-                    if ord(utf8(c3)) == 68:
+                    if ord(c3) == 68:
                         return 'left'
-                    return ord(utf8(c3))
+                    return ord(c3)
                 return 'esc'
-            elif ord(utf8(c)) == 10:
+            elif ord(c) == 10:
                 return 'enter'
             return c
 
@@ -104,7 +102,7 @@ class KBHit:
 
         arrows = ['up', 'right', 'down', 'left']
 
-        return arrows[vals.index(ord(utf8(c)))]
+        return arrows[vals.index(ord(c))]
 
     def kbhit(self):
         ''' Returns True if keyboard character was hit, False otherwise.
