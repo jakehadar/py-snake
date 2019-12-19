@@ -1,14 +1,26 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import functools
 
 from .common import Point
 from .compat import utf8
 
-NW, NN, NE = utf8('┌'), utf8('─'), utf8('┐')
-WW, XX, EE = utf8('│'), utf8(' '), utf8('│')
-SW, SS, SE = utf8('└'), utf8('─'), utf8('┘')
+if sys.version_info.major == 2 and os.name == 'nt':
+    NW, NN, NE = ' ', '-', ' '
+    WW, XX, EE = '|', ' ', '|'
+    SW, SS, SE = ' ', '-', ' '
+    BODY, FOOD = '#', '*'
+
+else:
+    NW, NN, NE = utf8('┌'), utf8('─'), utf8('┐')
+    WW, XX, EE = utf8('│'), utf8(' '), utf8('│')
+    SW, SS, SE = utf8('└'), utf8('─'), utf8('┘')
+    FOOD, BODY = utf8('*'), utf8('█')
+
+VOID = XX
+
 
 
 class Canvas:

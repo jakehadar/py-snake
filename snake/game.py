@@ -3,15 +3,8 @@
 from .input import DefaultKeyReader
 from .engine import GameEngine
 from .model import SnakeModel
-from .view import Canvas
+from .view import Canvas, FOOD, BODY, VOID
 from .common import Frame, SelfCollision, BoundaryCollision, GameOver
-from .compat import utf8
-
-
-FOOD = utf8('*')
-BODY = utf8('█')
-VOID = utf8(' ')
-
 
 class Game(GameEngine):
     def __init__(self, config, key_reader_cls=DefaultKeyReader):
