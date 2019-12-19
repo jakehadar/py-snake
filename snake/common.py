@@ -13,7 +13,10 @@ class Frame:
         self.height = height
         self.x = x
         self.y = y
-        self.surface_points = set(Point(x, y) for x in self.xrange for y in self.yrange)
+
+    @property
+    def surface_points(self):
+        return set(Point(x, y) for x in self.xrange for y in self.yrange)
 
     @property
     def origin_point(self):
