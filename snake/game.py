@@ -6,6 +6,7 @@ from .model import SnakeModel
 from .view import Canvas, FOOD, BODY, VOID
 from .common import Frame, SelfCollision, BoundaryCollision, GameOver
 
+
 class Game(GameEngine):
     def __init__(self, config, key_reader_cls=DefaultKeyReader):
         super(Game, self).__init__(config.initial_speed)

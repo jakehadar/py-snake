@@ -5,7 +5,6 @@ import sys
 import functools
 
 from .common import Point
-from .compat import utf8
 
 if sys.version_info.major == 2 and os.name == 'nt':
     NW, NN, NE = ' ', '-', ' '
@@ -14,10 +13,10 @@ if sys.version_info.major == 2 and os.name == 'nt':
     BODY, FOOD = '#', '*'
 
 else:
-    NW, NN, NE = utf8('┌'), utf8('─'), utf8('┐')
-    WW, XX, EE = utf8('│'), utf8(' '), utf8('│')
-    SW, SS, SE = utf8('└'), utf8('─'), utf8('┘')
-    FOOD, BODY = utf8('*'), utf8('█')
+    NW, NN, NE = '┌', '─', '┐'
+    WW, XX, EE = '│', ' ', '│'
+    SW, SS, SE = '└', '─', '┘'
+    FOOD, BODY = '*', '█'
 
 VOID = XX
 
@@ -61,8 +60,8 @@ class Canvas:
 
     def print_to_console(self):
         self.clear_console()
-        speed_text = utf8('Speed: {:.02f}'.format(self.speed))
-        coverage_text = utf8('Cov: {:.0f}%'.format(self.coverage))
+        speed_text = 'Speed: {:.02f}'.format(self.speed)
+        coverage_text = 'Cov: {:.0f}%'.format(self.coverage)
         print('{} {}'.format(speed_text, coverage_text.rjust(self.frame.width - len(speed_text) + 1, XX)))
         print(''.join([NW] + [NN] * self.frame.width + [NE]))
         for y in self.frame.yrange:
