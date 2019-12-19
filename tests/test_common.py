@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from snake.common import Point, Frame
 
 
