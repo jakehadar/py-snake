@@ -4,6 +4,7 @@ An interactive CLI Snake game, tested on Python 2.7 and 3.6 Posix environments.
 
 ![Applications list view](https://github.com/jakehadar/py-snake/blob/master/screenshots/screenshot@half.png)
 
+
 Installation
 ------------
 Install from PyPi using
@@ -21,15 +22,18 @@ Or clone the repo and install using setuptools.
  $ python setup.py develop
 ```
 
+Both methods of installation will create an executable `snake` for your active Python environment. Whenever this environment is active, `snake` will be scoped in your PATH and playable.
+
+
 Usage
 -----
-Once py-snake is installed, start a new game by running `snake` from from command line. 
+After installation, start a new game by running `snake` from any directory on command line. 
 
 ``` {.sourceCode .bash}
 $ snake
 ```
 
-Optionally pass `--help` flag for more info.
+Optionally pass the `--help` flag to see options available for game configuration.
 
 ``` {.sourceCode .bash}
 $ snake --help
@@ -46,10 +50,26 @@ optional arguments:
   --food FOOD      Number of food pieces available
 ```
 
+Help
+----
+If the `snake` command stops working after a successful installation, check that you have the correct Python environment activated. You may need to manually activate the Python environment from a new terminal session, depending on your configuration.
 
-Un-installation
----------------
-Un-install Snake completely using pip.
+
+Gameplay
+--------
+* Use the arrow keys to guide the snake around the game board.
+* Score points by collecting food.
+* Avoid colliding with walls, or your own body.
+
+
+Help
+----
+If the `snake` command stops working after a successful installation, check that you have the correct Python environment activated. You may need to manually activate the Python environment from a new terminal session, depending on your configuration.
+
+
+Uninstallation
+--------------
+Uninstall py-snake using pip.
 
 ``` {.sourceCode .bash}
  $ pip uninstall py-snake
