@@ -11,19 +11,25 @@ Install from PyPi using
 Python.
 
 ``` {.sourceCode .bash}
- pip install py-snake
+ $ pip install py-snake
 ```
 
 Or clone the repo and install using setuptools.
 
 ``` {.sourceCode .bash}
- cd path/to/repo
- python setup.py develop
+ $ cd path/to/repo
+ $ python setup.py develop
 ```
 
 Usage
 -----
-Start a new game by running `snake` from from command line. Optionally pass `--help` flag for more info.
+Once py-snake is installed, start a new game by running `snake` from from command line. 
+
+``` {.sourceCode .bash}
+$ snake
+```
+
+Optionally pass `--help` flag for more info.
 
 ``` {.sourceCode .bash}
 $ snake --help
@@ -43,8 +49,8 @@ optional arguments:
 
 Un-installation
 ---------------
-Uninstall Snake completely using pip.
+Un-install Snake completely using pip.
 
 ``` {.sourceCode .bash}
- pip uninstall py-snake
+ $ pip uninstall py-snake
 ```
