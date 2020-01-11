@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class GameConfig:
     # Frame dimensions
     width = 30

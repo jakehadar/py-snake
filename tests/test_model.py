@@ -2,9 +2,9 @@
 
 import pytest
 
-from snake.model import SnakeModel
-from snake.common import Frame, Point, DirectionOffset, BoundaryCollision, SelfCollision
+from snake.common import Frame, Point, BoundaryCollision, SelfCollision
 from snake.config import GameConfig
+from snake.model import SnakeModel
 
 
 @pytest.fixture

@@ -96,16 +96,16 @@ class _KBHit:
             atexit.register(self.set_normal_term)
 
     def set_normal_term(self):
-        ''' Resets to normal terminal.  On Windows this is a no-op.
-        '''
+        """ Resets to normal terminal.  On Windows this is a no-op.
+        """
 
         if os.name != 'nt':
             termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
 
     def getch(self):
-        ''' Returns a keyboard character after kbhit() has been called.
+        """ Returns a keyboard character after kbhit() has been called.
             Should not be called in the same program as getarrow().
-        '''
+        """
 
         if os.name == 'nt':
             return msvcrt.getch()
@@ -131,13 +131,13 @@ class _KBHit:
             return c
 
     def getarrow(self):
-        ''' Returns an arrow-key code after kbhit() has been called. Codes are
+        """ Returns an arrow-key code after kbhit() has been called. Codes are
         0 : up
         1 : right
         2 : down
         3 : left
         Should not be called in the same program as getch().
-        '''
+        """
 
         if os.name == 'nt':
             msvcrt.getch()  # skip 0xE0
@@ -155,8 +155,8 @@ class _KBHit:
         return vals.index(code)
 
     def kbhit(self):
-        ''' Returns True if keyboard character was hit, False otherwise.
-        '''
+        """ Returns True if keyboard character was hit, False otherwise.
+        """
         if os.name == 'nt':
             return msvcrt.kbhit()
 

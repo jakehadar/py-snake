@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from .input import DefaultKeyReader
-from .engine import GameEngine
-from .model import SnakeModel
-from .view import Canvas, FOOD, BODY, VOID
 from .common import Frame, SelfCollision, BoundaryCollision, GameOver
+from .engine import GameEngine
+from .input import DefaultKeyReader
+from .model import SnakeModel
+from .view import Canvas, FOOD, BODY, EMPTY
 
 
 class Game(GameEngine):
@@ -18,7 +18,7 @@ class Game(GameEngine):
             canvas = Canvas(self.frame)
             canvas.register_overlay(lambda: self.snake.snake_body, BODY)
             canvas.register_overlay(lambda: self.snake.food_locations, FOOD)
-            canvas.register_overlay(lambda: self.snake.empty_locations, VOID)
+            canvas.register_overlay(lambda: self.snake.empty_locations, EMPTY)
             canvas.register_score_hook(lambda: self.snake.score)
             canvas.register_speed_hook(lambda: self.speed)
             return canvas

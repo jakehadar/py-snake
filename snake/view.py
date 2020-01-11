@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import functools
 import os
 import sys
-import functools
 
 from .common import Point
 
@@ -10,7 +10,7 @@ if sys.version_info.major == 2 and os.name == 'nt':
     NW, NN, NE = ' ', '-', ' '
     WW, XX, EE = '|', ' ', '|'
     SW, SS, SE = ' ', '-', ' '
-    BODY, FOOD = '#', '*'
+    FOOD, BODY = '*', '#'
 
 else:
     NW, NN, NE = '┌', '─', '┐'
@@ -18,8 +18,7 @@ else:
     SW, SS, SE = '└', '─', '┘'
     FOOD, BODY = '*', '█'
 
-VOID = XX
-
+EMPTY = XX
 
 
 class Canvas:
