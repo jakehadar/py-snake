@@ -50,13 +50,13 @@ class TestFrame:
         frame = Frame(6, 12)
         assert frame.center_point == Point(3, 6)
 
-    def test_xrange(self):
+    def test_x_range(self):
         frame = Frame(2, 3)
-        assert list(frame.xrange) == [0, 1]
+        assert list(frame.x_range) == [0, 1]
 
-    def test_yrange(self):
+    def test_y_range(self):
         frame = Frame(2, 3)
-        assert list(frame.yrange) == [0, 1, 2]
+        assert list(frame.y_range) == [0, 1, 2]
 
     def test_contains(self):
         frame = Frame(2, 3)

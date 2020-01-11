@@ -49,7 +49,7 @@ class Canvas:
         if message:
             for i, char in enumerate(message):
                 x_offset = -1 * int(len(message) / 2) + i
-                y_offset = -1 * int(self.frame.height / 4)
+                # y_offset = -1 * int(self.frame.height / 4)
                 self.overlay([self.frame.center_point + Point(x_offset, 0)], char)
         self.print_to_console()
 
@@ -63,8 +63,8 @@ class Canvas:
         coverage_text = 'Cov: {:.0f}%'.format(self.coverage)
         print('{} {}'.format(speed_text, coverage_text.rjust(self.frame.width - len(speed_text) + 1, XX)))
         print(''.join([NW] + [NN] * self.frame.width + [NE]))
-        for y in self.frame.yrange:
-            chars = [self.grid[Point(x, self.frame.height - y - 1)] for x in self.frame.xrange]
+        for y in self.frame.y_range:
+            chars = [self.grid[Point(x, self.frame.height - y - 1)] for x in self.frame.x_range]
             print(''.join([WW] + chars + [EE]))
         print(''.join([SW] + [SS] * self.frame.width + [SE]))
         print('Score: {}'.format(self.score))

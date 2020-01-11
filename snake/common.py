@@ -18,7 +18,7 @@ class Frame:
 
     @property
     def surface_points(self):
-        return set(Point(x, y) for x in self.xrange for y in self.yrange)
+        return set(Point(x, y) for x in self.x_range for y in self.y_range)
 
     @property
     def origin_point(self):
@@ -29,11 +29,11 @@ class Frame:
         return Point(int(self.width / 2), int(self.height / 2))
 
     @property
-    def xrange(self):
+    def x_range(self):
         return range(self.origin_point.x, self.origin_point.x + self.width)
 
     @property
-    def yrange(self):
+    def y_range(self):
         return range(self.origin_point.y, self.origin_point.y + self.height)
 
     def __contains__(self, point):

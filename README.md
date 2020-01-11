@@ -41,8 +41,8 @@ optional arguments:
 ```
 
 
-Uninstallation
---------------
+Un-installation
+---------------
 Uninstall Snake completely using pip.
 
 ``` {.sourceCode .bash}

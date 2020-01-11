@@ -32,8 +32,8 @@ class DefaultKeyReader(_KeyReader):
 
     def capture(self):
         self._tmp = None
-        if self._kb.kbhit():
-            self._last_key = self._kb.getch()
+        if kb_hit():
+            self._last_key = get_ch()
 
     def last_key(self):
         if self._tmp:
@@ -51,8 +51,8 @@ class ArrowKeyReader(_KeyReader):
 
     def capture(self):
         self._tmp = None
-        if self._kb.kbhit():
-            key = self._kb.getarrow()
+        if kb_hit():
+            key = get_arrow()
             if key != -1:
                 self._last_key = ['up', 'right', 'down', 'left'][key]
 
@@ -64,9 +64,74 @@ class ArrowKeyReader(_KeyReader):
         return self._tmp
 
 
+def kb_hit():
+    """ Returns True if keyboard character was hit, False otherwise.
+    """
+    if os.name == 'nt':
+        return msvcrt.kb_hit()
+
+    else:
+        dr, dw, de = select([sys.stdin], [], [], 0)
+        return dr != []
+
+
+def get_ch():
+    """ Returns a keyboard character after kb_hit() has been called.
+        Should not be called in the same program as get_arrow().
+    """
+
+    if os.name == 'nt':
+        return msvcrt.get_ch()
+
+    else:
+        c = sys.stdin.read(1)
+        if ord(c) == 27:
+            c2 = sys.stdin.read(1)
+            if ord(c2) == 91:
+                c3 = sys.stdin.read(1)
+                if ord(c3) == 65:
+                    return 'up'
+                if ord(c3) == 66:
+                    return 'down'
+                if ord(c3) == 67:
+                    return 'right'
+                if ord(c3) == 68:
+                    return 'left'
+                return ord(c3)
+            return 'esc'
+        elif ord(c) == 10:
+            return 'enter'
+        return c
+
+
+def get_arrow():
+    """ Returns an arrow-key code after kb_hit() has been called. Codes are
+    0 : up
+    1 : right
+    2 : down
+    3 : left
+    Should not be called in the same program as get_ch().
+    """
+
+    if os.name == 'nt':
+        msvcrt.get_ch()  # skip 0xE0
+        c = msvcrt.get_ch()
+        res = [72, 77, 80, 75]
+
+    else:
+        c = sys.stdin.read(3)[2]
+        res = [65, 67, 66, 68]
+
+    code = ord(c)
+    if code not in res:
+        return -1
+
+    return res.index(code)
+
+
 class _KBHit:
     """
-    A Python class implementing KBHIT, the standard keyboard-interrupt poller.
+    A Python class implementing KB-HIT, the standard keyboard-interrupt poll-er.
     Works transparently on Windows and Posix (Linux, Mac OS X).  Doesn't work
     with IDLE.
 
@@ -101,68 +166,6 @@ class _KBHit:
 
         if os.name != 'nt':
             termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
-
-    def getch(self):
-        """ Returns a keyboard character after kbhit() has been called.
-            Should not be called in the same program as getarrow().
-        """
-
-        if os.name == 'nt':
-            return msvcrt.getch()
-
-        else:
-            c = sys.stdin.read(1)
-            if ord(c) == 27:
-                c2 = sys.stdin.read(1)
-                if ord(c2) == 91:
-                    c3 = sys.stdin.read(1)
-                    if ord(c3) == 65:
-                        return 'up'
-                    if ord(c3) == 66:
-                        return 'down'
-                    if ord(c3) == 67:
-                        return 'right'
-                    if ord(c3) == 68:
-                        return 'left'
-                    return ord(c3)
-                return 'esc'
-            elif ord(c) == 10:
-                return 'enter'
-            return c
-
-    def getarrow(self):
-        """ Returns an arrow-key code after kbhit() has been called. Codes are
-        0 : up
-        1 : right
-        2 : down
-        3 : left
-        Should not be called in the same program as getch().
-        """
-
-        if os.name == 'nt':
-            msvcrt.getch()  # skip 0xE0
-            c = msvcrt.getch()
-            vals = [72, 77, 80, 75]
-
-        else:
-            c = sys.stdin.read(3)[2]
-            vals = [65, 67, 66, 68]
-
-        code = ord(c)
-        if code not in vals:
-            return -1
-
-        return vals.index(code)
-
-    def kbhit(self):
-        """ Returns True if keyboard character was hit, False otherwise.
-        """
-        if os.name == 'nt':
-            return msvcrt.kbhit()
-
-        else:
-            dr, dw, de = select([sys.stdin], [], [], 0)
-            return dr != []
 
 
 if __name__ == '__main__':
