@@ -1,11 +1,10 @@
 import io
-import os
 
+from pkg_resources import resource_string
 from setuptools import setup, find_packages
 
 VERSION = '0.0.2'
 
-here = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='py-snake',
@@ -16,10 +15,10 @@ setup(
     url='https://github.com/jakehadar/py-snake',
     python_requires='>=2.7',
     include_package_data=True,
-    long_description=io.open(os.path.join(here, 'README.md'), encoding='utf-8').read(),
+    long_description=resource_string(__name__, 'README.md').decode('utf-8'),
     long_description_content_type='text/markdown',
     keywords='snake game python cli command line',
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(exclude=['tests', 'screenshots']),
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: End Users/Desktop',
@@ -32,7 +31,8 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python',
     ],
-    install_requires=io.open(os.path.join(here, 'requirements.txt'), encoding='utf-8').readlines(),
+    install_requires=resource_string(__name__, 'requirements.txt').decode('utf-8'),
+    license=resource_string(__name__, 'LICENSE.txt').decode('utf-8'),
     tests_require=['pytest'],
     entry_points={
         'console_scripts': ['snake=snake.run:main']
