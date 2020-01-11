@@ -5,6 +5,13 @@ An interactive CLI Snake game, tested on Python 2.7 and 3.6 Posix environments.
 ![Applications list view](https://github.com/jakehadar/py-snake/blob/master/screenshots/screenshot@half.png)
 
 
+Gameplay
+--------
+* Use the arrow keys to guide the snake around the game board.
+* Score points by collecting food.
+* Avoid colliding with walls, or your own body.
+
+
 Installation
 ------------
 Install from PyPi using
@@ -22,7 +29,7 @@ Or clone the repo and install using setuptools.
  $ python setup.py develop
 ```
 
-Both methods of installation will create an executable `snake` for your active Python environment. Whenever this environment is active, `snake` will be scoped in your PATH and playable.
+Both methods will create an executable `snake` for your active Python environment. Whenever this environment is active, `snake` will be scoped in your PATH and playable from any working directory.
 
 
 Usage
@@ -50,20 +57,9 @@ optional arguments:
   --food FOOD      Number of food pieces available
 ```
 
-Help
-----
-If the `snake` command stops working after a successful installation, check that you have the correct Python environment activated. You may need to manually activate the Python environment from a new terminal session, depending on your configuration.
 
-
-Gameplay
---------
-* Use the arrow keys to guide the snake around the game board.
-* Score points by collecting food.
-* Avoid colliding with walls, or your own body.
-
-
-Help
-----
+Troubleshooting
+---------------
 If the `snake` command stops working after a successful installation, check that you have the correct Python environment activated. You may need to manually activate the Python environment from a new terminal session, depending on your configuration.
 
 
