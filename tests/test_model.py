@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+
 import pytest
 
 from snake.common import Frame, Point, BoundaryCollision, SelfCollision
