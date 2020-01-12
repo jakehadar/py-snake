@@ -18,10 +18,10 @@ __all__ = ['DefaultKeyReader', 'ArrowKeyReader']
 
 class _KeyReader:
     def capture(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def last_key(self):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class DefaultKeyReader(_KeyReader):
