@@ -29,7 +29,7 @@ Or clone the repo and install using setuptools.
  $ python setup.py develop
 ```
 
-Both methods will create an executable `snake` for your active Python environment. Whenever this environment is active, `snake` will be scoped in your PATH and playable from any working directory.
+Both methods will create an executable `snake` for your active Python environment. Whenever this environment is active, `snake` will be scoped in your PATH making it playable from any working directory.
 
 
 Usage
