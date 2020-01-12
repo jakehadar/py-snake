@@ -52,8 +52,8 @@ setup(
         'Programming Language :: Python',
     ],
     install_requires=parse_resource_string('requirements.txt'),
-    license=parse_resource_string('LICENSE.txt'),
     tests_require=['pytest'],
+    license=parse_resource_string('LICENSE.txt'),
     entry_points={
         'console_scripts': ['snake=snake.run:main']
     }
