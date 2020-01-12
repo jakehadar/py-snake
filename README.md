@@ -60,7 +60,7 @@ optional arguments:
 
 Troubleshooting
 ---------------
-If the `snake` command stops working after a successful installation, check that you have the correct Python environment activated. You may need to manually activate the Python environment from a new terminal session, depending on your configuration.
+If the `snake` command stops working after a successful installation, check that you have the correct Python environment activated. You may need to manually activate the Python environment from a new terminal session, depending on how your environment is configured.
 
 
 Uninstallation
