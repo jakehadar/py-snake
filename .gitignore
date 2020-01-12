@@ -2,6 +2,7 @@
 .idea/
 *.pyc
 *.*~
+.tox
 __pycache__
 build/
 dist/
